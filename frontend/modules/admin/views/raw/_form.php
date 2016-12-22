@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use yii\jui\DatePicker;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Raw */
@@ -16,7 +17,19 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'pin')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'datetime')->textInput() ?>
+<?php
+echo 'Datetime';
+    echo DatePicker::widget([
+    'name'  => 'datetime',
+    'attribute' => 'datetime',
+    'model' => $model,
+    'value'  => '',
+    'options'=>['class' => 'form-control'],
+    //'language' => 'ru',
+    'dateFormat' => 'yyyy-MM-dd',
+]);
+
+?>
 
     <?= $form->field($model, 'verified')->textInput(['value'=>0,'readonly'=> true,'maxlength' => true]) ?>
 

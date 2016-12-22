@@ -14,6 +14,7 @@ use Yii;
  * @property string $ontime
  * @property string $pretime_value
  * @property string $posttime_value
+ * @property string $label
  *
  * @property ScheduleItem[] $scheduleItems
  */
@@ -34,7 +35,7 @@ class Workhour extends \yii\db\ActiveRecord
     {
         return [
             [['start_scan', 'end_scan', 'ontime'], 'safe'],
-            [['name', 'pretime_value', 'posttime_value'], 'string', 'max' => 255],
+            [['name', 'pretime_value', 'posttime_value', 'label'], 'string', 'max' => 255],
         ];
     }
 
@@ -51,6 +52,7 @@ class Workhour extends \yii\db\ActiveRecord
             'ontime' => Yii::t('app', 'Ontime'),
             'pretime_value' => Yii::t('app', 'Pretime Value'),
             'posttime_value' => Yii::t('app', 'Posttime Value'),
+            'label' => Yii::t('app', 'Label'),
         ];
     }
 
