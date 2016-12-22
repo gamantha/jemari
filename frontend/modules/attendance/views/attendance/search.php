@@ -622,7 +622,7 @@ array_push($workhour_columns,   ['label' => 'Cuti',  'footer' => $totalcuti,'val
     }
 
 }]);
-
+/*
 array_push($workhour_columns,   ['label' => 'Ijin', 'footer' => $totalijin,'attribute' => $workhour_id_list_key,'value' => function($data,$key,$index,$column) use($exception_array2){
     if (array_key_exists($key, $exception_array2)) {
         if ($exception_array2[$key]['exception_type'] == 'ijin') { return '1';} else { return '';}
@@ -646,7 +646,7 @@ array_push($workhour_columns,   ['label' => 'Alpa',  'footer' => $totalalpa/2,'a
                          }
 
 }]);
-
+*/
 
 array_push($workhour_columns,   ['label' => 'Keterangan', 'value' => ' ']);
 //array_push($workhour_columns,   ['class' => 'yii\grid\ActionColumn']);
