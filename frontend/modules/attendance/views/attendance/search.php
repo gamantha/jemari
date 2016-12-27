@@ -38,7 +38,7 @@ $totalpulang = 0;
 $totalawal = 0;
 
 $totallibur = 0;
-
+$totalhadir = 0;
 
 
 ?>
@@ -206,10 +206,11 @@ $datecounter = new DateTime($rawsearch->from_date);
 
 $endcounter = new DateTime($rawsearch->to_date);
 
-
+$hadir = 0;
 
 while ($datecounter <= $endcounter)
 {
+    $hadir = 0;
 $temp_exception_array = [];
 $rawsofday = Raw::find()
 ->andWhere(['pin' => $rawsearch->pin])
@@ -404,18 +405,23 @@ foreach ($exception_array2 as $exception_array_key => $exception_array_value) {
 }
 
 foreach ($temp_result as $temp_result_key => $temp_result_value) {
-
-    //echo '<hr/>sasdadsadada<hr/>';
+    $hadir = 0;
+    //echo $temp_result_key;
+    //echo '<hr/>';
     foreach ($temp_result_value as $temp_result_key2 => $temp_result_value2) {
         if ($temp_result_value2['attendance_status'] == 'telat') {
+             $hadir = 1;
             $totaltelat++;
         } else if ($temp_result_value2['attendance_status'] == 'ABSENT') {
             $totalalpa++;
         } else if ($temp_result_value2['attendance_status'] == 'masuk') {
+               $hadir = 1;
             $totalmasuk++;
         } else if ($temp_result_value2['attendance_status'] == 'pulang') {
+             $hadir = 1;
             $totalpulang++;
         } else if ($temp_result_value2['attendance_status'] == 'awal') {
+             $hadir = 1;
             $totalawal++;
         /*} else if (($temp_result_value2['attendance_status'] == 'Exception') && ($temp_result_value2['exception_type'] == 'sakit'))  {
             $totalsakit++;
@@ -429,6 +435,8 @@ foreach ($temp_result as $temp_result_key => $temp_result_value) {
         }
         # code...
     }
+
+    $totalhadir = $totalhadir + $hadir;
 }
 
 
@@ -1206,7 +1214,7 @@ GridView::PDF => [
 
                 'contentAfter'=>'<h3 class="panel-title"> Masuk : '.$totalmasuk.' -- telat : ' . $totaltelat . '</h3>
                     <h3 class="panel-title"> Pulang : '.$totalpulang.' -- awal : ' . $totalawal . '</h3>
-    <h3 class="panel-title"> TOTAL KEHADIRAN : ' . floor($totalmasuk + $totaltelat) . '</h3>
+    <h3 class="panel-title"> TOTAL KEHADIRAN : ' . $totalhadir . '</h3>
     <h3 class="panel-title"> Alpha : '.($totalalpa / 2).' </h3>
     <h3 class="panel-title"> Sakit : '.$totalsakit.' </h3>
     <h3 class="panel-title"> Ijin : '.$totalijin.' </h3>
@@ -1245,8 +1253,10 @@ echo '<br/>';
 echo 'sakit : ' . $totalsakit;
 echo '<br/>';
 echo 'ijin : ' . $totalijin;
+echo '<br/>';
+echo 'hadir : ' . $totalhadir;
 
-//print_r($temp_result);
+print_r($temp_result);
 //print_r($exception_array2);
 //echo sizeof($workhour_id_list);
 
