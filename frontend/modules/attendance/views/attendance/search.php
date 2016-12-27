@@ -213,14 +213,15 @@ while ($datecounter <= $endcounter)
 $temp_exception_array = [];
 $rawsofday = Raw::find()
 ->andWhere(['pin' => $rawsearch->pin])
-->andWhere(['in', 'hardware_id',[$rawsearch->hardware_id,0]])
+->andWhere(['in', 'hardware_id',[$rawsearch->hardware_id]])
 ->andWhere(['between', 'datetime',$datecounter->format("Y-m-d"), $datecounter->modify('+1 day')->format("Y-m-d")])
 ->All();
 $attendance_array[$datecounter->modify('-1 day')->format("Y-m-d")] = $rawsofday;
 
     
     $exceptions =  ScheduleException::find()
-                    ->andWhere(['employee_id' => $employee->id])
+                    //->andWhere(['employee_id' => $employee->id])
+                    ->andWhere(['in', 'employee_id',[$employee->id,0]])
                    ->andWhere(['between', 'datetime',$datecounter->format("Y-m-d"), $datecounter->modify('+1 day')->format("Y-m-d")])
                     ->All();
 
@@ -1244,7 +1245,8 @@ echo 'sakit : ' . $totalsakit;
 echo '<br/>';
 echo 'ijin : ' . $totalijin;
 
-print_r($temp_result);
+//print_r($temp_result);
+print_r($exception_array2);
 echo sizeof($workhour_id_list);
 
 
