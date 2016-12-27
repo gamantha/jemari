@@ -42,6 +42,7 @@ AppAsset::register($this);
                         ['label' => 'Raw', 'url' => ['/admin/raw/index']],
                                       ['label' => 'Attendance', 'url' => ['/attendance/attendance/search']],
                                                  ['label' => 'Rekap', 'url' => ['/attendance/attendance/recap']],
+                                                     ['label' => 'add absensi non-mesin', 'url' => ['/attendance/extraattendance/create']],
     ];
     if (Yii::$app->user->isGuest) {
         $menuItems[] = ['label' => 'Signup', 'url' => ['/site/signup']];
