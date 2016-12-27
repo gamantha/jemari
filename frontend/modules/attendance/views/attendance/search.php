@@ -206,12 +206,14 @@ $datecounter = new DateTime($rawsearch->from_date);
 
 $endcounter = new DateTime($rawsearch->to_date);
 
+
+
 while ($datecounter <= $endcounter)
 {
 $temp_exception_array = [];
 $rawsofday = Raw::find()
 ->andWhere(['pin' => $rawsearch->pin])
-->andWhere(['hardware_id' => $rawsearch->hardware_id])
+->andWhere(['in', 'hardware_id',[$rawsearch->hardware_id,0]])
 ->andWhere(['between', 'datetime',$datecounter->format("Y-m-d"), $datecounter->modify('+1 day')->format("Y-m-d")])
 ->All();
 $attendance_array[$datecounter->modify('-1 day')->format("Y-m-d")] = $rawsofday;
@@ -894,7 +896,7 @@ $workhour_columns3 = [
    return $retvaluejamdatang;
     }
 ],
-
+/*
          [
             'label' => 'selisih waktu',
 
@@ -940,7 +942,7 @@ $retvalueselisihwaktu =  $interval->format('%H hours %I minutes');
         return $retvalueselisihwaktu;
     }
 ],
-
+*/
 
 [
     'label' => 'Pulang shift pagi',
@@ -1001,7 +1003,7 @@ $retvalueselisihwaktu =  $interval->format('%H hours %I minutes');
    return $retvaluejamdatang;
     }
 ],
-
+/*
          [
             'label' => 'selisih waktu',
 
@@ -1048,7 +1050,7 @@ $retvalueselisihwaktu =  $interval->format('%H hours %I minutes');
     }
 ],
 
-
+*/
 [
     'label' => 'Pulang shift malam',
     'value' => function($data, $key, $index, $column) use ($workhour_id_list)
@@ -1242,7 +1244,7 @@ echo 'sakit : ' . $totalsakit;
 echo '<br/>';
 echo 'ijin : ' . $totalijin;
 
-print_r($exception_array2);
+print_r($temp_result);
 echo sizeof($workhour_id_list);
 
 
