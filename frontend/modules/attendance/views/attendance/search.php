@@ -1206,7 +1206,7 @@ GridView::PDF => [
 
                 'contentAfter'=>'<h3 class="panel-title"> Masuk : '.$totalmasuk.' -- telat : ' . $totaltelat . '</h3>
                     <h3 class="panel-title"> Pulang : '.$totalpulang.' -- awal : ' . $totalawal . '</h3>
-    <h3 class="panel-title"> TOTAL KEHADIRAN => ' . $totalmasuk + $totaltelat . '</h3>
+    <h3 class="panel-title"> TOTAL KEHADIRAN : ' . floor($totalmasuk + $totaltelat) . '</h3>
     <h3 class="panel-title"> Alpha : '.($totalalpa / 2).' </h3>
     <h3 class="panel-title"> Sakit : '.$totalsakit.' </h3>
     <h3 class="panel-title"> Ijin : '.$totalijin.' </h3>
