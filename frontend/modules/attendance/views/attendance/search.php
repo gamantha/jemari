@@ -1247,8 +1247,8 @@ echo '<br/>';
 echo 'ijin : ' . $totalijin;
 
 //print_r($temp_result);
-print_r($exception_array2);
-echo sizeof($workhour_id_list);
+//print_r($exception_array2);
+//echo sizeof($workhour_id_list);
 
 
 ?>

@@ -430,7 +430,7 @@ $recap_array[$pin]['nama'] = $nama;
 $recap_array[$pin]['cuti'] = $totalcuti;
 $recap_array[$pin]['ijin'] = $totalijin;
 $recap_array[$pin]['sakit'] = $totalsakit;
-$recap_array[$pin]['alpa'] = $totalalpa;
+$recap_array[$pin]['alpa'] = floor($totalalpa/2);
 }
 
 
@@ -456,7 +456,7 @@ $recap_array[$extra_attendances_value->nik]['kehadiran'] = $extra_attendances_va
 $recap_array[$extra_attendances_value->nik]['cuti'] = $extra_attendances_value->cuti;
 $recap_array[$extra_attendances_value->nik]['ijin'] = $extra_attendances_value->ijin;
 $recap_array[$extra_attendances_value->nik]['sakit'] = $extra_attendances_value->sakit;
-$recap_array[$extra_attendances_value->nik]['alpa'] = $extra_attendances_value->alpa;
+$recap_array[$extra_attendances_value->nik]['alpa'] = floor($extra_attendances_value->alpa / 2);
 }
 
 unset($recap_array[0]);
@@ -517,7 +517,7 @@ GridView::PDF => [
         'showPageSummary' => true,
         'showFooter' => true,
         'showCaption' => true,
-        'filename' => Yii::t('app', 'export-absensi'),
+        'filename' => Yii::t('app', 'export-recap-absensi'),
         'alertMsg' => Yii::t('app', 'The PDF export file will be generated for download.'),
         'options' => ['title' => Yii::t('app', 'Portable Document Format')],
         'mime' => 'application/pdf',
