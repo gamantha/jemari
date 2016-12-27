@@ -1203,7 +1203,7 @@ GridView::PDF => [
                 'contentBefore'=>'<h3 class="panel-title"> Periode : '.$rawsearch->from_date . ' - ' . $rawsearch->to_date .' -- Hari kerja : ' . floor(($totalmasuk + $totaltelat + floor($totalalpa/2))) . ' hari </h3>
     <h3 class="panel-title"> PIN : ' . $rawsearch->pin . ' -- Nama : ' . $nama . '</h3>',
 
-                'contentAfter'=>'<h3 class="panel-title"> Periode : '.$totalmasuk.' -- telat : ' . $totaltelat . '</h3>
+                'contentAfter'=>'<h3 class="panel-title"> Masuk : '.$totalmasuk.' -- telat : ' . $totaltelat . '</h3>
     <h3 class="panel-title"> TOTAL KEHADIRAN => Pulang : '.$totalpulang.' -- awal : ' . $totalawal . '</h3>
     <h3 class="panel-title"> Alpa : '.($totalalpa / 2).' </h3>
     <h3 class="panel-title"> Sakit : '.$totalsakit.' </h3>
