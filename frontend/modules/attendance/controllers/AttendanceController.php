@@ -29,11 +29,50 @@ print_r($model);
     }
 
 
-    public function actionPrint()
+    public function actionRecap()
     {
+       $rawsearch = new RawSearch();
+ $query =  RawSearch::find();
+
+if (Yii::$app->request->post()) {
+
+        if ($rawsearch->load(Yii::$app->request->post())){
+
+            $query =  RawSearch::find()
+            //->andWhere(['pin' => $rawsearch->pin])
+            //->andWhere(['hardware_id' => $rawsearch->hardware_id])
+            ->andWhere(['between', 'datetime', $rawsearch->from_date, $rawsearch->to_date]);
+
+        } else {
 
 
+        }
 
+} else {
+
+  //   echo '<br><br><br><br><br><br/><br/><br/>';
+  //  echo '<br/><br/>POST';
+//print_r($_REQUEST);
+//echo '<pre>';
+//print_r($rawsearch);
+}
+
+              
+              $provider = new ActiveDataProvider([
+    'query' => $query,
+    'pagination' => [
+        'pageSize' => 10,
+    ],
+    'sort' => [
+        'defaultOrder' => [
+            'datetime' => SORT_ASC,
+            //'title' => SORT_ASC, 
+        ]
+    ],
+]);
+
+
+  return $this->render('recap', ['dataProvider' => $provider, 'rawsearch' => $rawsearch]);
     }
 
     public function actionSearch()

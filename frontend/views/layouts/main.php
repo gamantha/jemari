@@ -41,6 +41,7 @@ AppAsset::register($this);
                 ['label' => 'Hardware', 'url' => ['/admin/hardware/index']],
                         ['label' => 'Raw', 'url' => ['/admin/raw/index']],
                                       ['label' => 'Attendance', 'url' => ['/attendance/attendance/search']],
+                                                 ['label' => 'Rekap', 'url' => ['/attendance/attendance/recap']],
     ];
     if (Yii::$app->user->isGuest) {
         $menuItems[] = ['label' => 'Signup', 'url' => ['/site/signup']];
