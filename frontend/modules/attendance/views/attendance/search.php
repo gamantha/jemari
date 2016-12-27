@@ -37,6 +37,8 @@ $totalawal = 0;
 $totalpulang = 0;
 $totalawal = 0;
 
+$totallibur = 0;
+
 
 
 ?>
@@ -419,6 +421,8 @@ foreach ($temp_result as $temp_result_key => $temp_result_value) {
         } else if (($temp_result_value2['attendance_status'] == 'Exception') && ($temp_result_value2['exception_type'] == 'cuti'))  {
             $totalcuti++;
             */
+        } else if ($temp_result_value2['attendance_status'] == 'libur') {
+            $totallibur++;
         }
         # code...
     }
@@ -835,7 +839,7 @@ array_push($workhour_columns2,   ['label' => 'Alpa',  'footer' => $totalalpa/2,'
 }]);
 
 
-array_push($workhour_columns2,   ['label' => 'Keterangan',  'footer' => $totalsakit,'value' => function($data,$key,$index,$column) use($exception_array2){
+array_push($workhour_columns2,   ['label' => 'Keterangan',  'value' => function($data,$key,$index,$column) use($exception_array2){
     if (array_key_exists($key, $exception_array2)) {
         //if ($exception_array2[$key]['exception_type'] == 'sakit') { return '1';} else { return '';}
         return $exception_array2[$key]['exception_reason'];
