@@ -262,19 +262,26 @@ $temp_exception_array_transformed = ArrayHelper::index($temp_exception_array,'da
 
   //      echo 'klkl<hr/>';
           foreach ($rawsofday as $rawofdaykey => $rawofdayvalue) {
+
+            //echo $rawofdayvalue->datetime;
+//  echo '<br/>';
                                      foreach ($schedule_array as $schedule_array_key => $schedule_array_value) {
                                             $schedule_item_list = ScheduleItem::find()
                                                     ->andWhere(['schedule_set_id' => $schedule_array_key])
                                                     ->andWhere(['dayofweek' => date("w", strtotime($rawofdayvalue->datetime))])
                                                     ->All();
                                 $dateday = date("Y-m-d", strtotime($rawofdayvalue->datetime));
+                                            //echo $rawofdayvalue->datetime;
+
                                 $nextday = date("Y-m-d", strtotime($rawofdayvalue->datetime . ' +1 day'));
                                 $time = date("H:i:s", strtotime($rawofdayvalue->datetime));
+
                                     foreach ($schedule_item_list as $sched_item_key => $sched_item_value) {
+
                                                //   echo '<br/>';
                                                  //       echo $sched_item_value->workhour_id . ' -> ' . $sched_item_value->workhour->ontime;
                                                   if (($time >= $sched_item_value->workhour->start_scan) && ($time <= $sched_item_value->workhour->end_scan)) {
-                                                        //echo 'YES';
+                                                     //   echo $sched_item_value->workhour->id;
 
 
 
@@ -301,6 +308,8 @@ $temp_exception_array_transformed = ArrayHelper::index($temp_exception_array,'da
                                                                 ]);
                                                         }
                                                              // $attendance_array[$dateday]['exception']= [];
+                                                  } else {
+
                                                   }
                                                 
                                         }
@@ -878,24 +887,34 @@ $workhour_columns3 = [
 ],
 
 [
-    'label' => 'Datang shift pagi',
+    'label' => 'Shift pagi',
     'value' => function($data, $key, $index, $column) use ($workhour_id_list)
     {
             $retvaluejamdatang = '';
                         if (sizeof($data) > 0)
                 {
      foreach ($workhour_id_list as $workhour_id_list_key => $workhour_id_list_value) {
-                                  if(array_key_exists($workhour_id_list_key,['4']))
+                    //if(in_array($workhour_id_list_key,['3']))
+        //if(array_key_exists($workhour_id_list_key,$data))
+                                            if(($workhour_id_list_key == '3') && array_key_exists('3',$data))
                           {
+          
                             if ($data[$workhour_id_list_key]['attendance_status'] == 'ABSENT') {
                                // return '';
                              } else if ($data[$workhour_id_list_key]['attendance_status'] == 'masuk') {
                                  $retvaluejamdatang =  $data[$workhour_id_list_key]['time'];
                              } else if ($data[$workhour_id_list_key]['attendance_status'] == 'telat') {
                                  $retvaluejamdatang =  $data[$workhour_id_list_key]['time'];
+                             } else if ($data[$workhour_id_list_key]['attendance_status'] == 'awal') {
+                                 $retvaluejamdatang =  $data[$workhour_id_list_key]['time'];
+                             } else if ($data[$workhour_id_list_key]['attendance_status'] == 'pulang') {
+                                 $retvaluejamdatang =  $data[$workhour_id_list_key]['time'];
+                             } else {
+                                //return 'andrea';
                              }
                          } else {  
-                          //   return 'ew';
+                            //return $workhour_id_list_key;
+                             //$retvaluejamdatang =  $data[$workhour_id_list_key]['time'];
                          }
                         }           
                 } else {
@@ -905,72 +924,42 @@ $workhour_columns3 = [
    return $retvaluejamdatang;
     }
 ],
-/*
-         [
-            'label' => 'selisih waktu',
 
-    'value' => function($data,$key, $index, $column) use ($workhour_id_list) 
-    {
-        $retvalueselisihwaktu = '';
-                        if (sizeof($data) > 0)
-                {
-     foreach ($workhour_id_list as $workhour_id_list_key => $workhour_id_list_value) {
-                                            if(array_key_exists($workhour_id_list_key,$data))
-                          {
-                            if ($data[$workhour_id_list_key]['attendance_status'] != 'ABSENT') {
-                              $workhour = workhour::findOne($workhour_id_list_key);
-
-if(is_null($data[$workhour_id_list_key]['time'])) {
-    //return null;
-} else {
-
-                              $time1 = new DateTime($data[$workhour_id_list_key]['time']);
-                            $time2 = new DateTime($workhour->ontime);
-                              $interval = $time2->diff($time1);
-                              if ($data[$workhour_id_list_key]['attendance_status'] == 'telat') {
-                                $retvalueselisihwaktu =  $interval->format('%H hours %I minutes');  
-                              } else  if ($data[$workhour_id_list_key]['attendance_status'] == 'awal') {
-$retvalueselisihwaktu =  $interval->format('%H hours %I minutes');  
-                              } else {
-                              //  return '';
-                              }
-                              ;
-                            //
-}
-
-                             } else {
-                              //   return '';
-                             }
-                         } else {
-                       //      return '';
-                         }
-     }           
-                } else {
-                 //   return '';
-                }
-        return $retvalueselisihwaktu;
-    }
-],
-*/
 
 [
-    'label' => 'Pulang shift pagi',
+    'label' => 'Shift malam',
     'value' => function($data, $key, $index, $column) use ($workhour_id_list)
     {
     $retvaluejampulang = '';
                         if (sizeof($data) > 0)
                 {
      foreach ($workhour_id_list as $workhour_id_list_key => $workhour_id_list_value) {
-                                  if(array_key_exists($workhour_id_list_key,$data))
+
+      //  echo sizeof($data);
+      //  echo ' -> '  . $key . '<br/>';
+                            //if(in_array($workhour_id_list_key,['5']))
+                                  //if(array_key_exists('5',$data))
+                                       if(($workhour_id_list_key == '5') && array_key_exists('5',$data))
+                                   //   if(array_key_exists($workhour_id_list_key,$data))
                           {
+                           // echo $workhour_id_list_key;
+                           // echo '<br/>';
+                            
                             if ($data[$workhour_id_list_key]['attendance_status'] == 'ABSENT') {
                                // return '';
                              } else if ($data[$workhour_id_list_key]['attendance_status'] == 'awal') {
                                  $retvaluejampulang =  $data[$workhour_id_list_key]['time'];
                              } else if ($data[$workhour_id_list_key]['attendance_status'] == 'pulang') {
                                  $retvaluejampulang =  $data[$workhour_id_list_key]['time'];
+                             } else if ($data[$workhour_id_list_key]['attendance_status'] == 'masuk') {
+                                 $retvaluejampulang =  $data[$workhour_id_list_key]['time'];
+                             } else if ($data[$workhour_id_list_key]['attendance_status'] == 'telat') {
+                                 $retvaluejampulang =  $data[$workhour_id_list_key]['time'];
                              }
+                             
                          } else {  
+                           // echo $workhour_id_list_key;
+                           // echo 'no';
                        //      return '';
                          }
      }           
@@ -982,7 +971,7 @@ $retvalueselisihwaktu =  $interval->format('%H hours %I minutes');
 ],
 
 
-
+/*
 
 [
     'label' => 'Masuk Shift malam',
@@ -1012,7 +1001,7 @@ $retvalueselisihwaktu =  $interval->format('%H hours %I minutes');
    return $retvaluejamdatang;
     }
 ],
-/*
+
          [
             'label' => 'selisih waktu',
 
@@ -1059,7 +1048,7 @@ $retvalueselisihwaktu =  $interval->format('%H hours %I minutes');
     }
 ],
 
-*/
+
 [
     'label' => 'Pulang shift malam',
     'value' => function($data, $key, $index, $column) use ($workhour_id_list)
@@ -1088,7 +1077,7 @@ $retvalueselisihwaktu =  $interval->format('%H hours %I minutes');
     }
 ],
 
-
+*/
 
 ];
 
@@ -1138,14 +1127,23 @@ echo GridView::widget([
         //'before'=>Html::a('<i class="glyphicon glyphicon-plus"></i> Create Country', ['create'], ['class' => 'btn btn-success']),
         //'after'=>Html::a('<i class="glyphicon glyphicon-repeat"></i> Reset Grid', ['index'], ['class' => 'btn btn-info']),
         //'footer'=>false,
-        'footer' => '<h3 class="panel-title"> Masuk : '.$totalmasuk.' -- telat : ' . $totaltelat . '</h3>
+        'footer' => ($role->id != 4)?'<h3 class="panel-title"> Masuk : '.$totalmasuk.' -- telat : ' . $totaltelat . '</h3>
 <h3 class="panel-title"> Pulang : '.$totalpulang.' -- awal : ' . $totalawal . '</h3>
 <h3 class="panel-title"> Alpa : '.($totalalpa / 2).' </h3>
 <h3 class="panel-title"> Sakit : '.$totalsakit.' </h3>
 <h3 class="panel-title"> Ijin : '.$totalijin.' </h3>
-<h3 class="panel-title"> Cuti : '.$totalcuti.' </h3>
+<h3 class="panel-title"> Cuti : '.$totalcuti.' </h3>'
 
-        ',
+:
+
+'<h3 class="panel-title"> Shift : '.($totalmasuk + $totaltelat) . '</h3>
+<h3 class="panel-title"> Sakit : '.$totalsakit.' </h3>
+<h3 class="panel-title"> Ijin : '.$totalijin.' </h3>
+<h3 class="panel-title"> Cuti : '.$totalcuti.' </h3>'
+
+
+
+,
     ],
         'columns' => ($role->id == 4)?$workhour_columns3 : $workhour_columns2,
         'showFooter' => true,
@@ -1212,13 +1210,19 @@ GridView::PDF => [
                 'contentBefore'=>'<h3 class="panel-title"> Periode : '.$rawsearch->from_date . ' - ' . $rawsearch->to_date .' -- Hari kerja : ' .  floor(($totalmasuk + $totaltelat + $totalsakit + $totalcuti + $totalijin + floor($totalalpa/2))) . ' hari </h3>
     <h3 class="panel-title"> PIN : ' . $rawsearch->pin . ' -- Nama : ' . $nama . '</h3>',
 
-                'contentAfter'=>'<h3 class="panel-title"> Masuk : '.$totalmasuk.' -- telat : ' . $totaltelat . '</h3>
-                    <h3 class="panel-title"> Pulang : '.$totalpulang.' -- awal : ' . $totalawal . '</h3>
-    <h3 class="panel-title"> TOTAL KEHADIRAN : ' . $totalhadir . '</h3>
-    <h3 class="panel-title"> Alpha : '.($totalalpa / 2).' </h3>
-    <h3 class="panel-title"> Sakit : '.$totalsakit.' </h3>
-    <h3 class="panel-title"> Ijin : '.$totalijin.' </h3>
-    <h3 class="panel-title"> Cuti : '.$totalcuti.' </h3>'
+                'contentAfter'=>($role->id != 4)?'<h3 class="panel-title"> Masuk : '.$totalmasuk.' -- telat : ' . $totaltelat . '</h3>
+<h3 class="panel-title"> Pulang : '.$totalpulang.' -- awal : ' . $totalawal . '</h3>
+<h3 class="panel-title"> Alpa : '.($totalalpa / 2).' </h3>
+<h3 class="panel-title"> Sakit : '.$totalsakit.' </h3>
+<h3 class="panel-title"> Ijin : '.$totalijin.' </h3>
+<h3 class="panel-title"> Cuti : '.$totalcuti.' </h3>'
+
+:
+
+'<h3 class="panel-title"> Shift : '.($totalmasuk + $totaltelat) . '</h3>
+<h3 class="panel-title"> Sakit : '.$totalsakit.' </h3>
+<h3 class="panel-title"> Ijin : '.$totalijin.' </h3>
+<h3 class="panel-title"> Cuti : '.$totalcuti.' </h3>'
         ]
     ],
 
@@ -1240,6 +1244,23 @@ GridView::PDF => [
 
 
 
+if ($role->id == 4) {
+
+echo '<pre>';
+
+echo '<br/>';
+echo 'shift : ' . ($totalmasuk + $totaltelat);
+
+echo '<br/>';
+echo 'sakit : ' . $totalsakit;
+echo '<br/>';
+echo 'ijin : ' . $totalijin;
+echo '<br/>';
+echo 'hadir : ' . $totalhadir;
+echo '<br/>';
+} else {
+
+
 
 echo '<pre>';
 
@@ -1255,8 +1276,13 @@ echo '<br/>';
 echo 'ijin : ' . $totalijin;
 echo '<br/>';
 echo 'hadir : ' . $totalhadir;
+echo '<br/>';
 
-print_r($temp_result);
+}
+
+
+//print_r($workhour_id_list);
+//print_r($temp_result);
 //print_r($exception_array2);
 //echo sizeof($workhour_id_list);
 
