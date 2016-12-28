@@ -887,7 +887,7 @@ $workhour_columns3 = [
 ],
 
 [
-    'label' => 'Shift pagi',
+    'label' => 'Shift pagi masuk',
     'value' => function($data, $key, $index, $column) use ($workhour_id_list)
     {
             $retvaluejamdatang = '';
@@ -924,10 +924,14 @@ $workhour_columns3 = [
    return $retvaluejamdatang;
     }
 ],
-
+[
+'label' => 'Shift pagi pulang',
+'value' => function($data,$key,$index,$column){
+    return '';},
+],
 
 [
-    'label' => 'Shift malam',
+    'label' => 'Shift malam masuk',
     'value' => function($data, $key, $index, $column) use ($workhour_id_list)
     {
     $retvaluejampulang = '';
@@ -969,7 +973,11 @@ $workhour_columns3 = [
    return $retvaluejampulang;
     }
 ],
-
+[
+'label' => 'Shift malam pulang',
+'value' => function($data,$key,$index,$column){
+    return '';},
+],
 
 /*
 

@@ -58,11 +58,11 @@ return [
         'modules' => [
 
             'admin' => [
-                'class' => 'app\modules\admin\Admin',
+                'class' => 'app\modules\admin\admin',
                 // ... other configurations for the module ...
             ],
             'attendance' => [
-                'class' => 'app\modules\attendance\Attendance',
+                'class' => 'app\modules\attendance\attendance',
                 // ... other configurations for the module ...
             ],
                'gridview' =>  [
