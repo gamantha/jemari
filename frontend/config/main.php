@@ -62,7 +62,7 @@ return [
                 // ... other configurations for the module ...
             ],
             'attendance' => [
-                'class' => 'app\modules\attendance\attendance',
+                'class' => 'app\modules\attendance\Attendance',
                 // ... other configurations for the module ...
             ],
                'gridview' =>  [
