@@ -1137,6 +1137,7 @@ echo GridView::widget([
 :
 
 '<h3 class="panel-title"> Shift : '.($totalmasuk + $totaltelat) . '</h3>
+<h3 class="panel-title"> Hadir : '.$totalhadir.' </h3>
 <h3 class="panel-title"> Sakit : '.$totalsakit.' </h3>
 <h3 class="panel-title"> Ijin : '.$totalijin.' </h3>
 <h3 class="panel-title"> Cuti : '.$totalcuti.' </h3>'
@@ -1212,6 +1213,7 @@ GridView::PDF => [
 
                 'contentAfter'=>($role->id != 4)?'<h3 class="panel-title"> Masuk : '.$totalmasuk.' -- telat : ' . $totaltelat . '</h3>
 <h3 class="panel-title"> Pulang : '.$totalpulang.' -- awal : ' . $totalawal . '</h3>
+<h3 class="panel-title"> Hadir : '.$totalhadir.' </h3>
 <h3 class="panel-title"> Alpa : '.($totalalpa / 2).' </h3>
 <h3 class="panel-title"> Sakit : '.$totalsakit.' </h3>
 <h3 class="panel-title"> Ijin : '.$totalijin.' </h3>
@@ -1220,6 +1222,7 @@ GridView::PDF => [
 :
 
 '<h3 class="panel-title"> Shift : '.($totalmasuk + $totaltelat) . '</h3>
+<h3 class="panel-title"> Hadir : '.$totalhadir.' </h3>
 <h3 class="panel-title"> Sakit : '.$totalsakit.' </h3>
 <h3 class="panel-title"> Ijin : '.$totalijin.' </h3>
 <h3 class="panel-title"> Cuti : '.$totalcuti.' </h3>'
