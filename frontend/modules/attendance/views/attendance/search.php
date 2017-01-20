@@ -295,6 +295,7 @@ $temp_exception_array_transformed = ArrayHelper::index($temp_exception_array,'da
                                                                 'workhour_id' => $sched_item_value->workhour->id,
                                                                 'optional' => $sched_item_value->optional,
                                                                 'time' => $time,
+                                                                'raw_status' => $rawofdayvalue->status,
                                                                 'attendance_status' => $sched_item_value->workhour->pretime_value,
 
                                                                 ]);
@@ -303,6 +304,7 @@ $temp_exception_array_transformed = ArrayHelper::index($temp_exception_array,'da
                                                             array_push($attendance_array_yii, ['date' => $dateday, 'workhour_id' => $sched_item_value->workhour->id,
                                                                 'optional' => $sched_item_value->optional,
                                                                 'time' => $time,
+                                                                   'raw_status' => $rawofdayvalue->status,
                                                                 'attendance_status' => $sched_item_value->workhour->posttime_value,
 
                                                                 ]);
@@ -349,6 +351,7 @@ $temp_exception_array_transformed = ArrayHelper::index($temp_exception_array,'da
                                                                 'workhour_id' => $sched_item_value->workhour->id, 
                                                                 'optional' => $sched_item_value->optional,
                                                                 'time' => null,
+                                                                   'raw_status' => null,
                                                                 'attendance_status' => ($sched_item_value->optional == 'true') ? null : $status2,
 
 
@@ -364,6 +367,7 @@ $temp_exception_array_transformed = ArrayHelper::index($temp_exception_array,'da
                                 //'workhour_id' => 'none', 
                                 'optional' => 'none',
                                     'time' => null,
+                                       'raw_status' => null,
                                      'attendance_status' => 'none',
                                                                 
                                 ]);
@@ -899,19 +903,21 @@ $workhour_columns3 = [
                                             if(($workhour_id_list_key == '3') && array_key_exists('3',$data))
                           {
           
-                            if ($data[$workhour_id_list_key]['attendance_status'] == 'ABSENT') {
-                               // return '';
-                             } else if ($data[$workhour_id_list_key]['attendance_status'] == 'masuk') {
-                                 $retvaluejamdatang =  $data[$workhour_id_list_key]['time'];
-                             } else if ($data[$workhour_id_list_key]['attendance_status'] == 'telat') {
-                                 $retvaluejamdatang =  $data[$workhour_id_list_key]['time'];
-                             } else if ($data[$workhour_id_list_key]['attendance_status'] == 'awal') {
-                                 $retvaluejamdatang =  $data[$workhour_id_list_key]['time'];
-                             } else if ($data[$workhour_id_list_key]['attendance_status'] == 'pulang') {
-                                 $retvaluejamdatang =  $data[$workhour_id_list_key]['time'];
-                             } else {
-                                //return 'andrea';
-                             }
+                                if ($data[$workhour_id_list_key]['raw_status'] == '0') {
+                                            if ($data[$workhour_id_list_key]['attendance_status'] == 'ABSENT') {
+                                               // return '';
+                                             } else if ($data[$workhour_id_list_key]['attendance_status'] == 'masuk') {
+                                                 $retvaluejamdatang =  $data[$workhour_id_list_key]['time'];
+                                             } else if ($data[$workhour_id_list_key]['attendance_status'] == 'telat') {
+                                                 $retvaluejamdatang =  $data[$workhour_id_list_key]['time'];
+                                             } else if ($data[$workhour_id_list_key]['attendance_status'] == 'awal') {
+                                                 $retvaluejamdatang =  $data[$workhour_id_list_key]['time'];
+                                             } else if ($data[$workhour_id_list_key]['attendance_status'] == 'pulang') {
+                                                 $retvaluejamdatang =  $data[$workhour_id_list_key]['time'];
+                                             } else {
+                                                //return 'andrea';
+                                             }
+                                         }
                          } else {  
                             //return $workhour_id_list_key;
                              //$retvaluejamdatang =  $data[$workhour_id_list_key]['time'];
@@ -924,10 +930,49 @@ $workhour_columns3 = [
    return $retvaluejamdatang;
     }
 ],
+
 [
 'label' => 'Shift pagi pulang',
-'value' => function($data,$key,$index,$column){
-    return '';},
+    'value' => function($data, $key, $index, $column) use ($workhour_id_list)
+    {
+    $retvaluejampulang = '';
+                        if (sizeof($data) > 0)
+                {
+     foreach ($workhour_id_list as $workhour_id_list_key => $workhour_id_list_value) {
+
+      //  echo sizeof($data);
+      //  echo ' -> '  . $key . '<br/>';
+                            //if(in_array($workhour_id_list_key,['5']))
+                                  //if(array_key_exists('5',$data))
+                                       if(($workhour_id_list_key == '5') && array_key_exists('5',$data))
+                                   //   if(array_key_exists($workhour_id_list_key,$data))
+                          {
+                           // echo $workhour_id_list_key;
+                           // echo '<br/>';
+                                 if ($data[$workhour_id_list_key]['raw_status'] == '1') {
+                            if ($data[$workhour_id_list_key]['attendance_status'] == 'ABSENT') {
+                               // return '';
+                             } else if ($data[$workhour_id_list_key]['attendance_status'] == 'awal') {
+                                 $retvaluejampulang =  $data[$workhour_id_list_key]['time'];
+                             } else if ($data[$workhour_id_list_key]['attendance_status'] == 'pulang') {
+                                 $retvaluejampulang =  $data[$workhour_id_list_key]['time'];
+                             } else if ($data[$workhour_id_list_key]['attendance_status'] == 'masuk') {
+                                 $retvaluejampulang =  $data[$workhour_id_list_key]['time'];
+                             } else if ($data[$workhour_id_list_key]['attendance_status'] == 'telat') {
+                                 $retvaluejampulang =  $data[$workhour_id_list_key]['time'];
+                             }
+                             }
+                         } else {  
+                           // echo $workhour_id_list_key;
+                           // echo 'no';
+                       //      return '';
+                         }
+     }           
+                } else {
+                   // return '';
+                }
+   return $retvaluejampulang;
+    }
 ],
 
 [
@@ -948,7 +993,7 @@ $workhour_columns3 = [
                           {
                            // echo $workhour_id_list_key;
                            // echo '<br/>';
-                            
+                                 if ($data[$workhour_id_list_key]['raw_status'] == '0') {
                             if ($data[$workhour_id_list_key]['attendance_status'] == 'ABSENT') {
                                // return '';
                              } else if ($data[$workhour_id_list_key]['attendance_status'] == 'awal') {
@@ -960,7 +1005,7 @@ $workhour_columns3 = [
                              } else if ($data[$workhour_id_list_key]['attendance_status'] == 'telat') {
                                  $retvaluejampulang =  $data[$workhour_id_list_key]['time'];
                              }
-                             
+                             }
                          } else {  
                            // echo $workhour_id_list_key;
                            // echo 'no';
@@ -975,10 +1020,44 @@ $workhour_columns3 = [
 ],
 [
 'label' => 'Shift malam pulang',
-'value' => function($data,$key,$index,$column){
-    return '';},
-],
+    'value' => function($data, $key, $index, $column) use ($workhour_id_list)
+    {
+            $retvaluejamdatang = '';
+                        if (sizeof($data) > 0)
+                {
+     foreach ($workhour_id_list as $workhour_id_list_key => $workhour_id_list_value) {
+                    //if(in_array($workhour_id_list_key,['3']))
+        //if(array_key_exists($workhour_id_list_key,$data))
+                                            if(($workhour_id_list_key == '3') && array_key_exists('3',$data))
+                          {
+          
+                                if ($data[$workhour_id_list_key]['raw_status'] == '1') {
+                                            if ($data[$workhour_id_list_key]['attendance_status'] == 'ABSENT') {
+                                               // return '';
+                                             } else if ($data[$workhour_id_list_key]['attendance_status'] == 'masuk') {
+                                                 $retvaluejamdatang =  $data[$workhour_id_list_key]['time'];
+                                             } else if ($data[$workhour_id_list_key]['attendance_status'] == 'telat') {
+                                                 $retvaluejamdatang =  $data[$workhour_id_list_key]['time'];
+                                             } else if ($data[$workhour_id_list_key]['attendance_status'] == 'awal') {
+                                                 $retvaluejamdatang =  $data[$workhour_id_list_key]['time'];
+                                             } else if ($data[$workhour_id_list_key]['attendance_status'] == 'pulang') {
+                                                 $retvaluejamdatang =  $data[$workhour_id_list_key]['time'];
+                                             } else {
+                                                //return 'andrea';
+                                             }
+                                         }
+                         } else {  
+                            //return $workhour_id_list_key;
+                             //$retvaluejamdatang =  $data[$workhour_id_list_key]['time'];
+                         }
+                        }           
+                } else {
+                   // return '';
+                }
 
+   return $retvaluejamdatang;
+    }
+],
 /*
 
 [
@@ -1098,6 +1177,111 @@ $retvalueselisihwaktu =  $interval->format('%H hours %I minutes');
 
 
 
+$workhour_columns3a = [
+
+[
+    'label' => 'date',
+    'value' => function($model, $key, $index, $column)
+    {
+        return $key;
+    }
+],
+
+[
+    'label' => 'Shift pagi masuk',
+    'value' => function($data, $key, $index, $column) use ($workhour_id_list)
+    {
+            $retvaluejamdatang = '';
+                        if (sizeof($data) > 0)
+                {
+     foreach ($workhour_id_list as $workhour_id_list_key => $workhour_id_list_value) {
+                    //if(in_array($workhour_id_list_key,['3']))
+        //if(array_key_exists($workhour_id_list_key,$data))
+                                            if(($workhour_id_list_key == '3') && array_key_exists('3',$data))
+                          {
+          
+                            if ($data[$workhour_id_list_key]['attendance_status'] == 'ABSENT') {
+                               // return '';
+                             } else if ($data[$workhour_id_list_key]['attendance_status'] == 'masuk') {
+                                 $retvaluejamdatang =  $data[$workhour_id_list_key]['time'];
+                             } else if ($data[$workhour_id_list_key]['attendance_status'] == 'telat') {
+                                 $retvaluejamdatang =  $data[$workhour_id_list_key]['time'];
+                             } else if ($data[$workhour_id_list_key]['attendance_status'] == 'awal') {
+                                 $retvaluejamdatang =  $data[$workhour_id_list_key]['time'];
+                             } else if ($data[$workhour_id_list_key]['attendance_status'] == 'pulang') {
+                                 $retvaluejamdatang =  $data[$workhour_id_list_key]['time'];
+                             } else {
+                                //return 'andrea';
+                             }
+                         } else {  
+                            //return $workhour_id_list_key;
+                             //$retvaluejamdatang =  $data[$workhour_id_list_key]['time'];
+                         }
+                        }           
+                } else {
+                   // return '';
+                }
+
+   return $retvaluejamdatang;
+    }
+],
+[
+'label' => 'Shift pagi pulang',
+'value' => function($data,$key,$index,$column){
+    return '';},
+],
+
+[
+    'label' => 'Shift malam masuk',
+    'value' => function($data, $key, $index, $column) use ($workhour_id_list)
+    {
+    $retvaluejampulang = '';
+                        if (sizeof($data) > 0)
+                {
+     foreach ($workhour_id_list as $workhour_id_list_key => $workhour_id_list_value) {
+
+      //  echo sizeof($data);
+      //  echo ' -> '  . $key . '<br/>';
+                            //if(in_array($workhour_id_list_key,['5']))
+                                  //if(array_key_exists('5',$data))
+                                       if(($workhour_id_list_key == '5') && array_key_exists('5',$data))
+                                   //   if(array_key_exists($workhour_id_list_key,$data))
+                          {
+                           // echo $workhour_id_list_key;
+                           // echo '<br/>';
+                            
+                            if ($data[$workhour_id_list_key]['attendance_status'] == 'ABSENT') {
+                               // return '';
+                             } else if ($data[$workhour_id_list_key]['attendance_status'] == 'awal') {
+                                 $retvaluejampulang =  $data[$workhour_id_list_key]['time'];
+                             } else if ($data[$workhour_id_list_key]['attendance_status'] == 'pulang') {
+                                 $retvaluejampulang =  $data[$workhour_id_list_key]['time'];
+                             } else if ($data[$workhour_id_list_key]['attendance_status'] == 'masuk') {
+                                 $retvaluejampulang =  $data[$workhour_id_list_key]['time'];
+                             } else if ($data[$workhour_id_list_key]['attendance_status'] == 'telat') {
+                                 $retvaluejampulang =  $data[$workhour_id_list_key]['time'];
+                             }
+                             
+                         } else {  
+                           // echo $workhour_id_list_key;
+                           // echo 'no';
+                       //      return '';
+                         }
+     }           
+                } else {
+                   // return '';
+                }
+   return $retvaluejampulang;
+    }
+],
+[
+'label' => 'Shift malam pulang',
+'value' => function($data,$key,$index,$column){
+    return '';},
+],
+
+
+];
 
 
 
@@ -1144,8 +1328,8 @@ echo GridView::widget([
 
 :
 
-'<h3 class="panel-title"> Shift : '.($totalmasuk + $totaltelat) . '</h3>
-<h3 class="panel-title"> Hadir : '.$totalhadir.' </h3>
+'<h3 class="panel-title"> Shift : '.floor(($totalmasuk + $totaltelat) / 2) . '</h3>
+<h3 class="panel-title"> Hadir : '.$totalhadir.' hari</h3>
 <h3 class="panel-title"> Sakit : '.$totalsakit.' </h3>
 <h3 class="panel-title"> Ijin : '.$totalijin.' </h3>
 <h3 class="panel-title"> Cuti : '.$totalcuti.' </h3>'
@@ -1229,7 +1413,7 @@ GridView::PDF => [
 
 :
 
-'<h3 class="panel-title"> Shift : '.($totalmasuk + $totaltelat) . '</h3>
+'<h3 class="panel-title"> Shift : '.floor(($totalmasuk + $totaltelat) / 2) . '</h3>
 <h3 class="panel-title"> Hadir : '.$totalhadir.' </h3>
 <h3 class="panel-title"> Sakit : '.$totalsakit.' </h3>
 <h3 class="panel-title"> Ijin : '.$totalijin.' </h3>
@@ -1260,7 +1444,7 @@ if ($role->id == 4) {
 echo '<pre>';
 
 echo '<br/>';
-echo 'shift : ' . ($totalmasuk + $totaltelat);
+echo 'shift : ' . floor(($totalmasuk + $totaltelat) / 2);
 
 echo '<br/>';
 echo 'sakit : ' . $totalsakit;
