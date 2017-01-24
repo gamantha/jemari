@@ -40,6 +40,9 @@ $totalawal = 0;
 $totallibur = 0;
 $totalhadir = 0;
 
+$totalshiftmasuk = 0;
+$totalshiftpulang = 0;
+
 
 ?>
 
@@ -377,15 +380,7 @@ $temp_exception_array_transformed = ArrayHelper::index($temp_exception_array,'da
 $datecounter->modify('+1 day');
 }
 
-
-
-
-
 }
-
-
-
-
 
 
 $final_attendance_array = [];
@@ -425,21 +420,43 @@ foreach ($temp_result as $temp_result_key => $temp_result_value) {
     $hadir = 0;
     //echo $temp_result_key;
     //echo '<hr/>';
+      $today = new DateTime($temp_result_key);
+     //$yeesterday =  $today->modify('-1 day')->format("Y-m-d");
+    $yesterday =  $today->modify('-1 day');
+    //echo $yesterday->format("Y-m-d");
+    //echo '<hr/>';
+        if (array_key_exists($yesterday->format("Y-m-d"), $temp_result)) {
+//echo $yesterday->format("Y-m-d");
+//echo '<hr/>';
+//$totalshiftmasuk++;
+        }
     foreach ($temp_result_value as $temp_result_key2 => $temp_result_value2) {
         if ($temp_result_value2['attendance_status'] == 'telat') {
              $hadir = 1;
             $totaltelat++;
+                    if (array_key_exists($yesterday->format("Y-m-d"), $temp_result)) {
+                            $totalshiftmasuk++;
+                        }
         } else if ($temp_result_value2['attendance_status'] == 'ABSENT') {
             $totalalpa++;
         } else if ($temp_result_value2['attendance_status'] == 'masuk') {
                $hadir = 1;
             $totalmasuk++;
+                    if (array_key_exists($yesterday->format("Y-m-d"), $temp_result)) {
+                            $totalshiftmasuk++;
+                        }
         } else if ($temp_result_value2['attendance_status'] == 'pulang') {
              $hadir = 1;
             $totalpulang++;
+                    if (array_key_exists($yesterday->format("Y-m-d"), $temp_result)) {
+                            $totalshiftpulang++;
+                        }
         } else if ($temp_result_value2['attendance_status'] == 'awal') {
              $hadir = 1;
             $totalawal++;
+                    if (array_key_exists($yesterday->format("Y-m-d"), $temp_result)) {
+                            $totalshiftpulang++;
+                        }
         /*} else if (($temp_result_value2['attendance_status'] == 'Exception') && ($temp_result_value2['exception_type'] == 'sakit'))  {
             $totalsakit++;
         } else if (($temp_result_value2['attendance_status'] == 'Exception') && ($temp_result_value2['exception_type'] == 'ijin'))  {
@@ -487,7 +504,6 @@ $workhour_columns = [
 
 
 foreach ($workhour_id_list as $workhour_id_list_key => $workhour_id_list_value) {
-//print_r($workhour_id_list_value);
         array_push($workhour_columns, [
             'label' => Workhour::findOne($workhour_id_list_key)->label,
                        'attribute' => $workhour_id_list_key,
@@ -697,6 +713,6 @@ if (isset($employee->id)) {
      ?>
 
     <?php
-    echo '<pre>';
-print_r($temp_result);
+    //echo '<pre>';
+//print_r($temp_result);
 ?>

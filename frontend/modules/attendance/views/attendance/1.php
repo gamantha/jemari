@@ -387,7 +387,8 @@ GridView::PDF => [
 <h3 class="panel-title"> Hadir : '.$totalhadir.' </h3>
 <h3 class="panel-title"> Sakit : '.$totalsakit.' </h3>
 <h3 class="panel-title"> Ijin : '.$totalijin.' </h3>
-<h3 class="panel-title"> Cuti : '.$totalcuti.' </h3>'
+<h3 class="panel-title"> Cuti : '.$totalcuti.' </h3>
+<h3 class="panel-title"> Hadir : '.$totalhadir.' </h3>'
         ]
     ],
 
@@ -396,58 +397,4 @@ GridView::PDF => [
     ]);
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-if ($role->id == 4) {
-
-echo '<pre>';
-
-echo '<br/>';
-echo 'shift : ' . floor(($totalmasuk + $totaltelat) / 2);
-
-echo '<br/>';
-echo 'sakit : ' . $totalsakit;
-echo '<br/>';
-echo 'ijin : ' . $totalijin;
-echo '<br/>';
-echo 'hadir : ' . $totalhadir;
-echo '<br/>';
-} else {
-
-
-
-echo '<pre>';
-
-echo '<br/>';
-echo 'masuk : ' . $totalmasuk . ' -- telat : ' . $totaltelat;
-echo '<br/>';
-echo 'pulang : ' . $totalpulang . ' --- awal : ' . $totalawal;
-echo '<br/>';
-echo 'alpa : ' . $totalalpa / 2;
-echo '<br/>';
-echo 'sakit : ' . $totalsakit;
-echo '<br/>';
-echo 'ijin : ' . $totalijin;
-echo '<br/>';
-echo 'hadir : ' . $totalhadir;
-echo '<br/>';
-
-}
-
-
-//print_r($workhour_id_list);
-//print_r($temp_result);
-//print_r($exception_array2);
-//echo sizeof($workhour_id_list);
 ?>
