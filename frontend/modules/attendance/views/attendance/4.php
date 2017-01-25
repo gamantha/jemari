@@ -262,6 +262,9 @@ $masukkemarin = '';
      }           
                 } 
 
+                              if (($pagipulang == '') && ($pagimasuk == '')){
+        return '';
+        }
 
                                 $time_malampulang = new DateTime($malampulang);
                             $time_pagipulang = new DateTime($pagipulang);
@@ -532,12 +535,26 @@ $masukkemarin = '';
 
                              //   $time_malamammasuk = new DateTime($malammasuk);
                             if($masukkemarin !== 'out-of-range') {
+
+                              if ($malampulang == ''){
+        return '';
+        }
                                       $time_malammasuk = new DateTime($masukkemarin);
                             $time_pagimasuk = new DateTime($pagimasuk);
                               $interval = $time_pagipulang->diff($time_pagimasuk);
-                                          $interval2 = $time_malampulang->diff($time_malammasuk);
-return $interval2->format('%H h %I m');  
-} else {
+                              //$time_malammasuk->modify('+12 hour');
+//                              $time_malampulang->modify('-60 minutes ');
+  $interval2 = $time_malampulang->diff($time_malammasuk);
+  $sec = (60 - ($interval2->s));
+  $min = (59 - ($interval2->i));
+  $hou = (23 - ($interval2->h));
+  return $hou . ' h ' . $min  . ' m ';
+//return $interval2->format('%R %H h %I m');  
+                              return $time_malampulang->format(' H:i:s') . ' - ' . $time_malammasuk->format(' H:i:s');
+
+}
+
+else {
   return 'OUT OF RANGE';
 }
 
@@ -547,36 +564,13 @@ return $interval2->format('%H h %I m');
 
 ];
 
-
-/*
-
-                 if(($workhour_id_list_key == '3') && array_key_exists('3',$data))
-                          {
-          
-                                if ($data[$workhour_id_list_key]['raw_status'] == '1') {
-                                            if ($data[$workhour_id_list_key]['attendance_status'] == 'ABSENT') {
-                                               // return '';
-                                             } else if ($data[$workhour_id_list_key]['attendance_status'] == 'masuk') {
-                                                 $retvaluejamdatang =  $data[$workhour_id_list_key]['time'];
-                                             } else if ($data[$workhour_id_list_key]['attendance_status'] == 'telat') {
-                                                 $retvaluejamdatang =  $data[$workhour_id_list_key]['time'];
-                                             } else if ($data[$workhour_id_list_key]['attendance_status'] == 'awal') {
-                                                 $retvaluejamdatang =  $data[$workhour_id_list_key]['time'];
-                                             } else if ($data[$workhour_id_list_key]['attendance_status'] == 'pulang') {
-                                                 $retvaluejamdatang =  $data[$workhour_id_list_key]['time'];
-                                             } else {
-                                                //return 'andrea';
-                                             }
-                                         }
-                         }
-                
-*/
-
-                         //echo $rawsearch->from_date;
                          if(isset($temp_result[$rawsearch->from_date]['3']['raw_status']))
                          {
-                          $temp_result[$rawsearch->from_date]['3']['raw_status'] == '1';
+                          if($temp_result[$rawsearch->from_date]['3']['raw_status'] == '1'){
+
+
                           $offset = 1;
+                        }
                          }
 
 
@@ -600,7 +594,6 @@ echo GridView::widget([
 :
 
 '<h3 class="panel-title"> Shift : '.ceil(($totalmasuk + $totaltelat - $offset) / 2) . '</h3>
-<h3 class="panel-title"> Hadir : '.$totalhadir.' hari</h3>
 <h3 class="panel-title"> Sakit : '.$totalsakit.' </h3>
 <h3 class="panel-title"> Ijin : '.$totalijin.' </h3>
 <h3 class="panel-title"> Cuti : '.$totalcuti.' </h3>'
