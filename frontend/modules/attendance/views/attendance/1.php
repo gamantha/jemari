@@ -373,22 +373,6 @@ GridView::PDF => [
                 'contentBefore'=>'<h3 class="panel-title"> Periode : '.$rawsearch->from_date . ' - ' . $rawsearch->to_date .' -- Hari kerja : ' .  floor(($totalhadir + $totalsakit + $totalcuti + $totalijin + floor($totalalpa/2))) . ' hari </h3>
     <h3 class="panel-title"> PIN : ' . $rawsearch->pin . ' -- Nama : ' . $nama . '</h3>',
 
-                'contentAfter'=>($role->id != 4)?'<h3 class="panel-title"> Masuk : '.$totalmasuk.' -- telat : ' . $totaltelat . '</h3>
-<h3 class="panel-title"> Pulang : '.$totalpulang.' -- awal : ' . $totalawal . '</h3>
-<h3 class="panel-title"> Hadir : '.$totalhadir.' </h3>
-<h3 class="panel-title"> Alpa : '.($totalalpa / 2).' </h3>
-<h3 class="panel-title"> Sakit : '.$totalsakit.' </h3>
-<h3 class="panel-title"> Ijin : '.$totalijin.' </h3>
-<h3 class="panel-title"> Cuti : '.$totalcuti.' </h3>'
-
-:
-
-'<h3 class="panel-title"> Shift : '.floor(($totalmasuk + $totaltelat) / 2) . '</h3>
-<h3 class="panel-title"> Hadir : '.$totalhadir.' </h3>
-<h3 class="panel-title"> Sakit : '.$totalsakit.' </h3>
-<h3 class="panel-title"> Ijin : '.$totalijin.' </h3>
-<h3 class="panel-title"> Cuti : '.$totalcuti.' </h3>
-<h3 class="panel-title"> Hadir : '.$totalhadir.' </h3>'
         ]
     ],
 
