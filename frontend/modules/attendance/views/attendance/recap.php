@@ -264,8 +264,6 @@ $attendance_array[$datecounter->modify('-1 day')->format("Y-m-d")] = $rawsofday;
 
 $temp_exception_array_transformed = ArrayHelper::index($temp_exception_array,'datecounter');
 
-
-
     if(sizeof($rawsofday) > 0) {
 
           foreach ($rawsofday as $rawofdaykey => $rawofdayvalue) {
@@ -294,6 +292,7 @@ $temp_exception_array_transformed = ArrayHelper::index($temp_exception_array,'da
                                                                 'date' => $dateday, 
                                                                 'workhour_id' => $sched_item_value->workhour->id,
                                                                 'optional' => $sched_item_value->optional,
+                                                                    'raw_status' => $rawofdayvalue->status,
                                                                 'time' => $time,
                                                                 'attendance_status' => $sched_item_value->workhour->pretime_value,
 
@@ -303,6 +302,7 @@ $temp_exception_array_transformed = ArrayHelper::index($temp_exception_array,'da
                                                             array_push($attendance_array_yii, ['date' => $dateday, 'workhour_id' => $sched_item_value->workhour->id,
                                                                 'optional' => $sched_item_value->optional,
                                                                 'time' => $time,
+                                                                 'raw_status' => $rawofdayvalue->status,
                                                                 'attendance_status' => $sched_item_value->workhour->posttime_value,
 
                                                                 ]);
@@ -343,6 +343,7 @@ $temp_exception_array_transformed = ArrayHelper::index($temp_exception_array,'da
                                                              array_push($attendance_array_yii, ['date' => $datecounter->format("Y-m-d"), 
                                                                 'workhour_id' => $sched_item_value->workhour->id, 
                                                                 'optional' => $sched_item_value->optional,
+                                                                 'raw_status' => null,
                                                                 'time' => null,
                                                                 'attendance_status' => ($sched_item_value->optional == 'true') ? null : $status2,
 
@@ -357,6 +358,7 @@ $temp_exception_array_transformed = ArrayHelper::index($temp_exception_array,'da
                                 //'workhour_id' => 'none', 
                                 'optional' => 'none',
                                     'time' => null,
+                                     'raw_status' => null,
                                      'attendance_status' => 'none',
                                                                 
                                 ]);
@@ -432,11 +434,26 @@ foreach ($temp_result as $temp_result_key => $temp_result_value) {
     $totalhadir = $totalhadir + $hadir;
 }
 
+$offset = 0;
+
+                         if(isset($temp_result[$rawsearch->from_date]['3']['raw_status']))
+                         {
+                          if($temp_result[$rawsearch->from_date]['3']['raw_status'] == '1'){
 
 
+                          $offset = 1;
+                        }
+                         }
 
 
-
+$empl = Employee::find()->andWhere(['pin' => $pin])->andWhere(['status' => 'active'])->One();
+$empl_sched = EmployeeSchedule::find()->andWhere(['employee_id' => $empl->id])->andWhere(['status' => 'active'])->One();
+if(isset($empl_sched)) {
+if ($empl_sched->schedule_set_id == '4'){
+    $totalhadir = ceil(($totalmasuk + $totaltelat - $offset) / 2);
+//$totalhadir = 0;
+}
+}
 
 $recap_array[$pin]['nama'] = $nama;
 //echo ' : ';
