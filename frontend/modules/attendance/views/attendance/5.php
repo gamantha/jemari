@@ -65,7 +65,7 @@ $workhour_columns2 = [
     }
 ],
 
-         [
+  /*       [
             'label' => 'selisih waktu',
 
     'value' => function($data,$key, $index, $column) use ($workhour_id_list) 
@@ -110,7 +110,7 @@ $retvalueselisihwaktu =  $interval->format('%H h %I m');
         return $retvalueselisihwaktu;
     }
 ],
-
+*/
 
 [
     'label' => 'Jam Pulang',
