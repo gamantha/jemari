@@ -89,14 +89,21 @@ if (Yii::$app->request->post()) {
 //print_r(Yii::$app->request->post());
 //echo '<pre>';
 //print_r($rawsearch);
+
 //$datecounter = new DateTime($rawsearch->from_date);
 //$endcounter = new DateTime($rawsearch->to_date);
 
+if($rawsearch->hardware_id == 'all') {
+                $query =  RawSearch::find()->andWhere(['pin' => $rawsearch->pin])
+            //->andWhere(['hardware_id' => $rawsearch->hardware_id])
+            ->andWhere(['between', 'datetime', $rawsearch->from_date, $rawsearch->to_date]);
+
+} else {
             $query =  RawSearch::find()->andWhere(['pin' => $rawsearch->pin])
             ->andWhere(['hardware_id' => $rawsearch->hardware_id])
             ->andWhere(['between', 'datetime', $rawsearch->from_date, $rawsearch->to_date]);
                       //->andWhere(['between', 'datetime', $post['to_date'], $post['to_date']])
-
+}
 
         } else {
 

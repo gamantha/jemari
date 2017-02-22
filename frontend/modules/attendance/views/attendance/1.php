@@ -46,6 +46,7 @@ $workhour_columns2 = [
      foreach ($workhour_id_list as $workhour_id_list_key => $workhour_id_list_value) {
                                   if(array_key_exists($workhour_id_list_key,$data))
                           {
+                                     if ($data[$workhour_id_list_key]['raw_status'] == '0') {
                             if ($data[$workhour_id_list_key]['attendance_status'] == 'ABSENT') {
                                // return '';
                              } else if ($data[$workhour_id_list_key]['attendance_status'] == 'masuk') {
@@ -53,6 +54,7 @@ $workhour_columns2 = [
                              } else if ($data[$workhour_id_list_key]['attendance_status'] == 'telat') {
                                  $retvaluejamdatang =  $data[$workhour_id_list_key]['time'];
                              }
+                         }
                          } else {  
                           //   return 'ew';
                          }

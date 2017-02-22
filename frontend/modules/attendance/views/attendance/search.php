@@ -21,6 +21,9 @@ use yii\data\ArrayDataProvider;
 
 use kartik\mpdf\Pdf;
 
+use app\models\Hardware;
+use app\models\HardwareSearch;
+
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Raw */
@@ -43,6 +46,17 @@ $totalhadir = 0;
 $totalshiftmasuk = 0;
 $totalshiftpulang = 0;
 
+$hw_ids = Hardware::find()->asArray()->all();
+//$ids = ArrayHelper::getColumn($hw_ids, 'id');
+
+$ids = ArrayHelper::map($hw_ids, 'id', 'id');
+
+$ids['all'] = 'all';
+//print_r($ids);
+//$ids = ['1', '2', 'all'];
+
+
+
 
 ?>
 
@@ -60,7 +74,11 @@ $totalshiftpulang = 0;
 
 
 
-    <?= $form->field($rawsearch, 'hardware_id')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($rawsearch, 'hardware_id')
+    ->textInput(['maxlength' => true]) 
+    ->dropDownList($ids)
+
+    ?>
 
 
     <?= $form->field($rawsearch, 'pin')->textInput(['maxlength' => true]) ?>
@@ -215,11 +233,21 @@ while ($datecounter <= $endcounter)
 {
     $hadir = 0;
 $temp_exception_array = [];
+
+if ($rawsearch->hardware_id == 'all') {
 $rawsofday = Raw::find()
+->andWhere(['pin' => $rawsearch->pin])
+//->andWhere(['in', 'hardware_id',[$rawsearch->hardware_id]])
+->andWhere(['between', 'datetime',$datecounter->format("Y-m-d"), $datecounter->modify('+1 day')->format("Y-m-d")])
+->All();
+} else {
+    $rawsofday = Raw::find()
 ->andWhere(['pin' => $rawsearch->pin])
 ->andWhere(['in', 'hardware_id',[$rawsearch->hardware_id]])
 ->andWhere(['between', 'datetime',$datecounter->format("Y-m-d"), $datecounter->modify('+1 day')->format("Y-m-d")])
 ->All();
+}
+
 $attendance_array[$datecounter->modify('-1 day')->format("Y-m-d")] = $rawsofday;
 
     
@@ -259,11 +287,14 @@ $attendance_array[$datecounter->modify('-1 day')->format("Y-m-d")] = $rawsofday;
 //echo '<hr/>';
 $temp_exception_array_transformed = ArrayHelper::index($temp_exception_array,'datecounter');
 
-
+        $alreadymasuk = [];
+$alreadypulang = [];
 
     if(sizeof($rawsofday) > 0) {
 
   //      echo 'klkl<hr/>';
+
+
           foreach ($rawsofday as $rawofdaykey => $rawofdayvalue) {
 
             //echo $rawofdayvalue->datetime;
@@ -279,38 +310,103 @@ $temp_exception_array_transformed = ArrayHelper::index($temp_exception_array,'da
                                 $nextday = date("Y-m-d", strtotime($rawofdayvalue->datetime . ' +1 day'));
                                 $time = date("H:i:s", strtotime($rawofdayvalue->datetime));
 
+
                                     foreach ($schedule_item_list as $sched_item_key => $sched_item_value) {
 
                                                //   echo '<br/>';
+
                                                  //       echo $sched_item_value->workhour_id . ' -> ' . $sched_item_value->workhour->ontime;
                                                   if (($time >= $sched_item_value->workhour->start_scan) && ($time <= $sched_item_value->workhour->end_scan)) {
                                                      //   echo $sched_item_value->workhour->id;
 
-
-
-                                                        if($time <= $sched_item_value->workhour->ontime)
+                                                    if ($rawofdayvalue->status == 0) {
+                                                        if (!isset($alreadymasuk[$dateday]))
                                                         {
-                                                          //   $attendance_array[$dateday]['attendance'][$sched_item_value->workhour->id][$sched_item_value->workhour->pretime_value] = $time;
-                                                             array_push($attendance_array_yii, [
-                                                                'date' => $dateday, 
-                                                                'workhour_id' => $sched_item_value->workhour->id,
-                                                                'optional' => $sched_item_value->optional,
-                                                                'time' => $time,
-                                                                'raw_status' => $rawofdayvalue->status,
-                                                                'attendance_status' => $sched_item_value->workhour->pretime_value,
+                                                                                    $alreadymasuk[$dateday] = true;
+                                                                        if($time <= $sched_item_value->workhour->ontime)
+                                                                        {
 
-                                                                ]);
-                                                        } else {
-                                                          //  $attendance_array[$dateday]['attendance'][$sched_item_value->workhour->id][$sched_item_value->workhour->posttime_value] = $time;
-                                                            array_push($attendance_array_yii, ['date' => $dateday, 'workhour_id' => $sched_item_value->workhour->id,
-                                                                'optional' => $sched_item_value->optional,
-                                                                'time' => $time,
-                                                                   'raw_status' => $rawofdayvalue->status,
-                                                                'attendance_status' => $sched_item_value->workhour->posttime_value,
 
-                                                                ]);
-                                                        }
-                                                             // $attendance_array[$dateday]['exception']= [];
+                                                                             array_push($attendance_array_yii, [
+                                                                                'date' => $dateday, 
+                                                                                'workhour_id' => $sched_item_value->workhour->id,
+                                                                                'optional' => $sched_item_value->optional,
+                                                                                'time' => $time,
+                                                                                'raw_status' => $rawofdayvalue->status,
+                                                                                'attendance_status' => $sched_item_value->workhour->pretime_value,
+
+                                                                                ]);
+                                                                         
+                                                                        } else {
+                                                                          //  $attendance_array[$dateday]['attendance'][$sched_item_value->workhour->id][$sched_item_value->workhour->posttime_value] = $time;
+                                                                            array_push($attendance_array_yii, ['date' => $dateday, 'workhour_id' => $sched_item_value->workhour->id,
+                                                                                'optional' => $sched_item_value->optional,
+                                                                                'time' => $time,
+                                                                                   'raw_status' => $rawofdayvalue->status,
+                                                                                'attendance_status' => $sched_item_value->workhour->posttime_value,
+
+                                                                                ]);
+                                                                        }
+
+                                                                                        }
+                                                    } else if ($rawofdayvalue->status == 1) {
+                                                        $alreadypulang[$dateday] = true;
+                                                                        if($time <= $sched_item_value->workhour->ontime)
+                                                                        {
+
+
+                                                                             array_push($attendance_array_yii, [
+                                                                                'date' => $dateday, 
+                                                                                'workhour_id' => $sched_item_value->workhour->id,
+                                                                                'optional' => $sched_item_value->optional,
+                                                                                'time' => $time,
+                                                                                'raw_status' => $rawofdayvalue->status,
+                                                                                'attendance_status' => $sched_item_value->workhour->pretime_value,
+
+                                                                                ]);
+                                                                         
+                                                                        } else {
+                                                                          //  $attendance_array[$dateday]['attendance'][$sched_item_value->workhour->id][$sched_item_value->workhour->posttime_value] = $time;
+                                                                            array_push($attendance_array_yii, ['date' => $dateday, 'workhour_id' => $sched_item_value->workhour->id,
+                                                                                'optional' => $sched_item_value->optional,
+                                                                                'time' => $time,
+                                                                                   'raw_status' => $rawofdayvalue->status,
+                                                                                'attendance_status' => $sched_item_value->workhour->posttime_value,
+
+                                                                                ]);
+                                                                        }
+
+
+                                                    } else {
+
+                                                                            if($time <= $sched_item_value->workhour->ontime)
+                                                                        {
+
+
+                                                                             array_push($attendance_array_yii, [
+                                                                                'date' => $dateday, 
+                                                                                'workhour_id' => $sched_item_value->workhour->id,
+                                                                                'optional' => $sched_item_value->optional,
+                                                                                'time' => $time,
+                                                                                'raw_status' => $rawofdayvalue->status,
+                                                                                'attendance_status' => $sched_item_value->workhour->pretime_value,
+
+                                                                                ]);
+                                                                         
+                                                                        } else {
+                                                                          //  $attendance_array[$dateday]['attendance'][$sched_item_value->workhour->id][$sched_item_value->workhour->posttime_value] = $time;
+                                                                            array_push($attendance_array_yii, ['date' => $dateday, 'workhour_id' => $sched_item_value->workhour->id,
+                                                                                'optional' => $sched_item_value->optional,
+                                                                                'time' => $time,
+                                                                                   'raw_status' => $rawofdayvalue->status,
+                                                                                'attendance_status' => $sched_item_value->workhour->posttime_value,
+
+                                                                                ]);
+                                                                        }
+                                                    }
+
+
+                 
                                                   } else {
 
                                                   }
@@ -430,33 +526,46 @@ foreach ($temp_result as $temp_result_key => $temp_result_value) {
 //echo '<hr/>';
 //$totalshiftmasuk++;
         }
+
+        $sudahmasuk = 0;
+        $sudahpulang = 0;
     foreach ($temp_result_value as $temp_result_key2 => $temp_result_value2) {
         if ($temp_result_value2['attendance_status'] == 'telat') {
              $hadir = 1;
             $totaltelat++;
-                    if (array_key_exists($yesterday->format("Y-m-d"), $temp_result)) {
+            if ($sudahmasuk == 0) {
+                                    if (array_key_exists($yesterday->format("Y-m-d"), $temp_result)) {
                             $totalshiftmasuk++;
+                            $sudahmasuk = 1;
                         }
+            }
+
         } else if ($temp_result_value2['attendance_status'] == 'ABSENT') {
             $totalalpa++;
         } else if ($temp_result_value2['attendance_status'] == 'masuk') {
                $hadir = 1;
             $totalmasuk++;
-                    if (array_key_exists($yesterday->format("Y-m-d"), $temp_result)) {
+            if ($sudahmasuk == 0) {
+                                    if (array_key_exists($yesterday->format("Y-m-d"), $temp_result)) {
                             $totalshiftmasuk++;
+                            $sudahmasuk = 1;}
                         }
         } else if ($temp_result_value2['attendance_status'] == 'pulang') {
              $hadir = 1;
             $totalpulang++;
-                    if (array_key_exists($yesterday->format("Y-m-d"), $temp_result)) {
+            //if ($sudahpulang == 0) {
+                                    if (array_key_exists($yesterday->format("Y-m-d"), $temp_result)) {
                             $totalshiftpulang++;
-                        }
+                            $sudahpulang = 1;}
+              //          }
         } else if ($temp_result_value2['attendance_status'] == 'awal') {
              $hadir = 1;
             $totalawal++;
-                    if (array_key_exists($yesterday->format("Y-m-d"), $temp_result)) {
+            //if ($sudahpulang == 0) {
+                                    if (array_key_exists($yesterday->format("Y-m-d"), $temp_result)) {
                             $totalshiftpulang++;
-                        }
+                            $sudahpulang = 1;}
+                        //}
         /*} else if (($temp_result_value2['attendance_status'] == 'Exception') && ($temp_result_value2['exception_type'] == 'sakit'))  {
             $totalsakit++;
         } else if (($temp_result_value2['attendance_status'] == 'Exception') && ($temp_result_value2['exception_type'] == 'ijin'))  {
@@ -535,58 +644,7 @@ foreach ($workhour_id_list as $workhour_id_list_key => $workhour_id_list_value) 
     }
 ]);
 
-        /*
-    array_push($workhour_columns, [
-            'label' => 'status',
-            'attribute' => $workhour_id_list_key,
-    'value' => function($data,$key, $index, $column) use (&$totalcuti){
-                if (sizeof($data) > 0)
-                {
-                        //$this->addCuti();
-                    //$totalcuti = 8;
-                          if(array_key_exists($column->attribute,$data))
-                          {
-                            if ($data[$column->attribute]['attendance_status'] != 'ABSENT') {
-                                 return $data[$column->attribute]['attendance_status'];
-                             } else {
-                                 return $data[$column->attribute]['attendance_status'];
-                             }
-                         } else {
-                             return '';
-                         }
-                } else {
-                    return '';
-                }
-                    },
-               //     'footer' => $totalcuti,
-                ]);
 
-
-    array_push($workhour_columns, [
-            'label' => 'exception',
-                  'attribute' => $workhour_id_list_key,
-    'value' => function($data,$key, $index, $column) use(&$exception_array2){
-                if (sizeof($data) > 0)
-                {
-                          if(array_key_exists($column->attribute,$data))
-                          {
-                            if ($data[$column->attribute]['attendance_status'] != 'Exception') {
-                                // return $data[$column->attribute]['attendance_status'];
-                                return '';
-                             } else {
-                               // return '';
-                                return $exception_array2[$key]['exception_type'];
-                                 //return $data[$column->attribute]['attendance_status'];
-                             }
-                         } else {  
-                             return '';
-                         }     
-                } else {
-                    return '';
-                }
-                    }
-                ]);
-*/
 
                 array_push($workhour_columns, [
             'label' => 'Telat',
@@ -713,6 +771,7 @@ if (isset($employee->id)) {
      ?>
 
     <?php
-  //  echo '<pre>';
+    echo '<pre>';
 //print_r($temp_result);
+print_r($attendance_array_yii);
 ?>
