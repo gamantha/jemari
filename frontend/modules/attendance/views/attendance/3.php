@@ -192,6 +192,12 @@ $retvalueselisihwaktu =  $interval->format('%H h %I m');
                               $time1 = new DateTime($retvaluejamdatang);
                             $time2 = new DateTime($retvaluejampulang);
                               $interval = $time2->diff($time1);
+
+                                                                        if (($retvaluejampulang == '') || ($retvaluejamdatang == '')){
+        return '';
+        }
+
+        
 return $interval->format('%H h %I m');  
 
 
