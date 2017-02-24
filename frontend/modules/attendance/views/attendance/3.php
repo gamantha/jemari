@@ -197,7 +197,7 @@ $retvalueselisihwaktu =  $interval->format('%H h %I m');
         return '';
         }
 
-        
+
 return $interval->format('%H h %I m');  
 
 
@@ -339,10 +339,12 @@ GridView::PDF => [
         'mime' => 'application/pdf',
         'config' => [
             'mode' => 'c',
-            'format' => 'A4-P',
+            'format' => 'Legal',
             'destination' => 'D',
             'marginTop' => 5,
             'marginBottom' => 5,
+            'marginLeft' => 5,
+            'marginRight' => 5,
             'cssInline' => '.kv-wrap{padding:20px;}' .
                 '.kv-align-center{text-align:center;}' .
                 '.kv-align-left{text-align:left;}' .
