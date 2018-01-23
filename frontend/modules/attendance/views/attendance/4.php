@@ -48,7 +48,7 @@ $workhour_columns3 = [
         //if(array_key_exists($workhour_id_list_key,$data))
                                             if(($workhour_id_list_key == '3') && array_key_exists('3',$data))
                           {
-          
+
                                 if ($data[$workhour_id_list_key]['raw_status'] == '0') {
                                             if ($data[$workhour_id_list_key]['attendance_status'] == 'ABSENT') {
                                                // return '';
@@ -64,11 +64,11 @@ $workhour_columns3 = [
                                                 //return 'andrea';
                                              }
                                          }
-                         } else {  
+                         } else {
                             //return $workhour_id_list_key;
                              //$retvaluejamdatang =  $data[$workhour_id_list_key]['time'];
                          }
-                        }           
+                        }
                 } else {
                    // return '';
                 }
@@ -78,7 +78,7 @@ $workhour_columns3 = [
 ],
 
 [
-'label' => 'Shift pagi pulang',
+'label' => 'pagi pulang',
     'value' => function($data, $key, $index, $column) use ($workhour_id_list)
     {
     $retvaluejampulang = '';
@@ -108,12 +108,12 @@ $workhour_columns3 = [
                                  $retvaluejampulang =  $data[$workhour_id_list_key]['time'];
                              }
                              }
-                         } else {  
+                         } else {
                            // echo $workhour_id_list_key;
                            // echo 'no';
                        //      return '';
                          }
-     }           
+     }
                 } else {
                    // return '';
                 }
@@ -133,7 +133,7 @@ $workhour_columns3 = [
         //if(array_key_exists($workhour_id_list_key,$data))
                                             if(($workhour_id_list_key == '3') && array_key_exists('3',$data))
                           {
-          
+
                                 if ($data[$workhour_id_list_key]['raw_status'] == '1') {
                                             if ($data[$workhour_id_list_key]['attendance_status'] == 'ABSENT') {
                                                // return '';
@@ -149,9 +149,9 @@ $workhour_columns3 = [
                                                 //return 'andrea';
                                              }
                                          }
-                         } 
-                        }           
-                } 
+                         }
+                        }
+                }
 
 
     $pagipulang = '';
@@ -181,9 +181,9 @@ $workhour_columns3 = [
                                  $pagipulang =  $data[$workhour_id_list_key]['time'];
                              }
                              }
-                         } 
-     }           
-                } 
+                         }
+     }
+                }
 
 
 
@@ -196,7 +196,7 @@ $workhour_columns3 = [
         //if(array_key_exists($workhour_id_list_key,$data))
                                             if(($workhour_id_list_key == '3') && array_key_exists('3',$data))
                           {
-          
+
                                 if ($data[$workhour_id_list_key]['raw_status'] == '0') {
                                             if ($data[$workhour_id_list_key]['attendance_status'] == 'ABSENT') {
                                                // return '';
@@ -212,9 +212,9 @@ $workhour_columns3 = [
                                                 //return 'andrea';
                                              }
                                          }
-                         } 
-                        }           
-                } 
+                         }
+                        }
+                }
 
 
 $masukkemarin = '';
@@ -258,9 +258,9 @@ $masukkemarin = '';
                                  $malammasuk =  $data[$workhour_id_list_key]['time'];
                              }
                              }
-                         } 
-     }           
-                } 
+                         }
+     }
+                }
 
                               if (($pagipulang == '') && ($pagimasuk == '')){
         return '';
@@ -275,12 +275,12 @@ $masukkemarin = '';
                               $interval = $time_pagipulang->diff($time_pagimasuk);
                                           $interval2 = $time_malampulang->diff($time_malammasuk);
 
-return $interval->format('%H h %I m');  
+return $interval->format('%H h %I m');
 }
 ],
 
 [
-    'label' => 'Shift malam masuk',
+    'label' => 'malam masuk',
     'value' => function($data, $key, $index, $column) use ($workhour_id_list)
     {
     $retvaluejampulang = '';
@@ -310,12 +310,12 @@ return $interval->format('%H h %I m');
                                  $retvaluejampulang =  $data[$workhour_id_list_key]['time'];
                              }
                              }
-                         } else {  
+                         } else {
                            // echo $workhour_id_list_key;
                            // echo 'no';
                        //      return '';
                          }
-     }           
+     }
                 } else {
                    // return '';
                 }
@@ -323,7 +323,7 @@ return $interval->format('%H h %I m');
     }
 ],
 [
-'label' => 'Shift malam pulang',
+'label' => 'malam pulang',
     'value' => function($data, $key, $index, $column) use ($workhour_id_list)
     {
             $retvaluejamdatang = '';
@@ -334,7 +334,7 @@ return $interval->format('%H h %I m');
         //if(array_key_exists($workhour_id_list_key,$data))
                                             if(($workhour_id_list_key == '3') && array_key_exists('3',$data))
                           {
-          
+
                                 if ($data[$workhour_id_list_key]['raw_status'] == '1') {
                                             if ($data[$workhour_id_list_key]['attendance_status'] == 'ABSENT') {
                                                // return '';
@@ -350,11 +350,11 @@ return $interval->format('%H h %I m');
                                                 //return 'andrea';
                                              }
                                          }
-                         } else {  
+                         } else {
                             //return $workhour_id_list_key;
                              //$retvaluejamdatang =  $data[$workhour_id_list_key]['time'];
                          }
-                        }           
+                        }
                 } else {
                    // return '';
                 }
@@ -381,10 +381,10 @@ return $interval->format('%H h %I m');
     return 'OUT OF RANGE';
   }
      //return sizeof($temp_result[$yesterday->format("Y-m-d")]);
-//return $today->format('%H h %I m');  
+//return $today->format('%H h %I m');
 
 }
-],  
+],
 */
 [
 
@@ -398,7 +398,7 @@ return $interval->format('%H h %I m');
         //if(array_key_exists($workhour_id_list_key,$data))
                                             if(($workhour_id_list_key == '3') && array_key_exists('3',$data))
                           {
-          
+
                                 if ($data[$workhour_id_list_key]['raw_status'] == '1') {
                                             if ($data[$workhour_id_list_key]['attendance_status'] == 'ABSENT') {
                                                // return '';
@@ -414,9 +414,9 @@ return $interval->format('%H h %I m');
                                                 //return 'andrea';
                                              }
                                          }
-                         } 
-                        }           
-                } 
+                         }
+                        }
+                }
 
 
     $pagipulang = '';
@@ -446,9 +446,9 @@ return $interval->format('%H h %I m');
                                  $pagipulang =  $data[$workhour_id_list_key]['time'];
                              }
                              }
-                         } 
-     }           
-                } 
+                         }
+     }
+                }
 
 
 
@@ -461,7 +461,7 @@ return $interval->format('%H h %I m');
         //if(array_key_exists($workhour_id_list_key,$data))
                                             if(($workhour_id_list_key == '3') && array_key_exists('3',$data))
                           {
-          
+
                                 if ($data[$workhour_id_list_key]['raw_status'] == '0') {
                                             if ($data[$workhour_id_list_key]['attendance_status'] == 'ABSENT') {
                                                // return '';
@@ -477,9 +477,9 @@ return $interval->format('%H h %I m');
                                                 //return 'andrea';
                                              }
                                          }
-                         } 
-                        }           
-                } 
+                         }
+                        }
+                }
 
 
 $masukkemarin = '';
@@ -525,9 +525,9 @@ $masukkemarin = '';
                                  $malammasuk =  $data[$workhour_id_list_key]['time'];
                              }
                              }
-                         } 
-     }           
-                } 
+                         }
+     }
+                }
 
 
                                 $time_malampulang = new DateTime($malampulang);
@@ -549,7 +549,7 @@ $masukkemarin = '';
   $min = (59 - ($interval2->i));
   $hou = (23 - ($interval2->h));
   return $hou . ' h ' . $min  . ' m ';
-//return $interval2->format('%R %H h %I m');  
+//return $interval2->format('%R %H h %I m');
                               return $time_malampulang->format(' H:i:s') . ' - ' . $time_malammasuk->format(' H:i:s');
 
 }
@@ -660,7 +660,7 @@ GridView::PDF => [
                     ['odd' => 'odd', 'even' => 'even']
                 ],
             ],
-            
+
             'options' => [
                 'title' => 'export',
                 'subject' => Yii::t('app', 'PDF export generated by kartik-v/yii2-grid extension'),
