@@ -1,9 +1,9 @@
 <?php
 
 ini_set('max_execution_time',3000000000);
-		$con = mysql_connect('202.67.13.34','ppsdm','ppsdM2014') or die("Unable to connect to MySQL");
-		mysql_select_db('jemaridb', $con);
-				if (mysql_error()) {
+		$con = mysqli_connect('db.cloud.gamantha.com','sig_user','sukahaji126') or die("Unable to connect to MySQL");
+		mysqli_select_db($con,'jemaridb');
+				if (mysqli_error($con)) {
 				exit('Connection to <b></b> failed.');
 			}
 			
@@ -16,10 +16,10 @@ $hw_id = '1';
 //ASI New : 192.168.100.205
 
 $hardware_config_sql = "SELECT * FROM hardware WHERE id = '".$hw_id."'";
-$hardware_result = mysql_query($hardware_config_sql);
+$hardware_result = mysqli_query($con,$hardware_config_sql);
 
 
-$hw = mysql_fetch_array($hardware_result);
+$hw = mysqli_fetch_array($hardware_result);
 
 
 		$IP 	= $hw['ip_address'];
@@ -82,13 +82,13 @@ $Time2 = date('Y-m-d H:i:s', strtotime($Time));
 
 //$Time2 = '2011-12-18 13:17:17';
 $insert = 'insert into raw (hardware_id,pin,datetime,verified,status,workcode)values('.$hw_id.','.$PIN.',"'.$Time2.'",'.$Verified.','.$Status.','.$Workcode.')';
-		$result = mysql_query($insert);
+		$result = mysqli_query($con,$insert);
 
 		}		
 			
 
 			
-	mysql_close($con);	
+	mysqli_close($con);	
 	
 			
 
